@@ -14,6 +14,7 @@ const store = init({
 
 const persistor = getPersistor();
 
+
 const App = () => (
     <PersistGate loading={<h1>Loading</h1>} persistor={persistor}>
         <Provider store={store}>
