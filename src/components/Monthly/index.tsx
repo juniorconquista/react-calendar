@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import classnames from 'classnames';
 
 import { getDaysBetweenMonths, week } from '../../utils/calendar';
 
@@ -11,7 +12,7 @@ interface MonthlyProps {
 
 const Monthly = ({ date }: MonthlyProps) => {
     const array = getDaysBetweenMonths(moment(date).get('month'), moment(date).get('year'))
-    console.log(moment('2019-07-15').isoWeekday())
+    console.log(array)
 
     return (
         <div className="calendar__page--month">
@@ -20,7 +21,7 @@ const Monthly = ({ date }: MonthlyProps) => {
             </div>
             <div className="month">
                 {array.customDaysArray.map(day =>
-                    <div className="day">{day}</div>
+                    <div className={classnames({ day: true, disabled: day.disabled })}>{day.formatedDate}</div>
                 )}
             </div>
         </div>

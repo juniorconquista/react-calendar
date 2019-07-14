@@ -23,10 +23,20 @@
             transition: 0.3s ease-in-out all;
             font-size: 13px;
             height: 30px;
+            &:hover {
+                background-color: #bebec1;
+                color: #696a6c;
+                svg {
+                    path {
+                        fill: #696a6c;
+                    }
+                }
+            }
             svg {
                 height: 10px;
                 width: 10px;
                 path {
+                    transition: 0.3s ease-in-out all;
                     fill: #fff;
                 }
             }
