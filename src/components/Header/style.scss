@@ -1,0 +1,31 @@
+.calendar__page--header {
+    background-color: #3f4042;
+    border-bottom: 1px solid #060606;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    button {
+        background-color: #696a6c;
+        padding: 5px 15px;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        margin: 1px;
+        transition: 0.3s ease-in-out all;
+        &:first-child {
+            border-radius: 4px 0px 0px 4px;
+        }
+        &:last-child {
+            border-radius: 0px 4px 4px 0px;
+        }
+        &.active {
+            background-color: #bebec1;
+            color: #696a6c;
+            font-family: 'Gotham Bold';
+        }
+        &:hover {
+            background-color: #bebec1;
+            color: #696a6c;
+        }
+    }
+}
