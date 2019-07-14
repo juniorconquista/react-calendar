@@ -10,10 +10,8 @@ export const getDaysBetweenMonths = (
         referenceMonth = today.getMonth();
         referenceYear = today.getFullYear();
     }
-
     const period = getCurrentPeriod(referenceMonth, referenceYear);
     const { startDate, endDate } = period;
-    console.log(startDate.format('DD-MM-YYYY'));
     const returnObject = {
         days: endDate.diff(startDate, 'days') + 1,
         startDate,
@@ -24,13 +22,46 @@ export const getDaysBetweenMonths = (
     return returnObject;
 };
 
-export const getCurrentPeriod = (month: number, year: number) => {
+export const getMonthsBetweenYear = (year: number) => {
+    const monthsInYear = months.reduce(
+        (prev: any, curr: string, index: number) => {
+            const startDate = moment()
+                .set('month', index)
+                .set('year', year)
+                .startOf('month');
+            const endDate = moment()
+                .set('month', index)
+                .set('year', year)
+                .endOf('month');
+            const weekDay = startDate.startOf('month').isoWeekday();
+            const days = getDaysBetweenDates(
+                startDate.subtract(weekDay !== 7 ? weekDay : 0, 'day'),
+                endDate,
+            );
+            prev[curr] = days;
+            return prev;
+        },
+        {},
+    );
+    return monthsInYear;
+};
+
+export const getLabel = (period: string, date: string) => {
+    switch (period) {
+        case 'monthly':
+            return `${months[moment(date).get('month')]} de ${moment(date).get(
+                'year',
+            )}`;
+        default:
+            return moment(date).get('year');
+    }
+};
+
+const getCurrentPeriod = (month: number, year: number) => {
     const baseDate = moment()
         .set('month', month)
         .set('year', year);
-
     const weekDay = baseDate.startOf('month').isoWeekday();
-
     return {
         startDate: baseDate
             .clone()
@@ -42,12 +73,15 @@ export const getCurrentPeriod = (month: number, year: number) => {
 
 const getDaysBetweenDates = (date: moment.Moment, endDate: moment.Moment) => {
     const dateArray = [];
-
     while (date <= endDate) {
-        dateArray.push(moment(date).get('date'));
+        dateArray.push({
+            formatedDate: moment(date).get('date'),
+            disabled: !moment(endDate)
+                .startOf('month')
+                .isSameOrBefore(moment(date)),
+        });
         date = moment(date).add(1, 'days');
     }
-
     return dateArray;
 };
 
@@ -57,10 +91,6 @@ const getDatesBetweenDates = (date: moment.Moment, endDate: moment.Moment) => {
         dateArray.push(moment(date).format('DD-MM-YYYY'));
         date = moment(date).add(1, 'days');
     }
-
-    console.log(moment(date).format('DD-MM-YYYY'));
-    console.log(dateArray);
-
     return dateArray;
 };
 

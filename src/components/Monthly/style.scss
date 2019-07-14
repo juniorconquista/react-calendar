@@ -23,13 +23,17 @@
         grid-row-gap: 10px;
         grid-column-gap: 10px;
         .day {
-            height: 142px;
+            height: 118px;
             display: flex;
             justify-content: flex-end;
             color: #fff;
             padding: 10px 15px;
             border: 1px solid #383839;
             border-radius: 3px;
+            &.disabled {
+                color: #808080;
+                background-color: #3f4042;
+            }
         }
     }
 }

@@ -11,12 +11,6 @@ interface HeaderProps {
 const Header = ({ period, setPeriod }: HeaderProps) => (
     <div className="calendar__page--header">
         <button
-            className={classnames({ active: period === 'weekly' })}
-            onClick={() => setPeriod('weekly')}
-            type="button">
-            Semana
-        </button>
-        <button
             className={classnames({ active: period === 'monthly' })}
             onClick={() => setPeriod('monthly')}
             type="button">
