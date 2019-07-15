@@ -23,16 +23,16 @@ export const calendar = {
                 const {
                     calendar: { holidays },
                 } = getState;
-                // if (!holidays[year]) {
-                //     const response = await repository.getHolidays({
-                //         api_key: key,
-                //         country: 'BR',
-                //         year,
-                //     });
-                //     return dispatch.calendar.holidays({
-                //         [year]: response.data.holidays.holidays,
-                //     });
-                // }
+                if (!holidays[year]) {
+                    const response = await repository.getHolidays({
+                        api_key: key,
+                        country: 'BR',
+                        year,
+                    });
+                    return dispatch.calendar.holidays({
+                        [year]: response.data.holidays.holidays,
+                    });
+                }
             } catch (error) {
                 toast.error(
                     'Ops :( Algo deu errado tente novamente !',
