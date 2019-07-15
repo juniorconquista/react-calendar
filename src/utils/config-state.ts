@@ -3,11 +3,13 @@ import createRematchPersist from '@rematch/persist';
 import storageSession from 'redux-persist/lib/storage/session';
 
 export const loading = createLoadingPlugin({
-    whitelist: [],
+    whitelist: ['calendar/getHolidaysAsync'],
 });
 
+
+
 export const persistPlugin = createRematchPersist({
-    whitelist: [''],
+    whitelist: ['calendar'],
     storage: storageSession,
     version: 1,
 });

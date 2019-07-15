@@ -1,25 +1,61 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 import Header from '../../components/Header';
-import Content from '../../components/Content';
 import handleFactory from './handleFactory';
 
 import './style.scss';
 
-const Calendar = () => {
+interface CalendarProps {
+    calendar: {
+        holidays: any
+    },
+    getHolidays: (value: number) => void,
+};
+
+const Calendar = ({ calendar, getHolidays }: CalendarProps) => {
     const [period, setPeriod] = useState<string>('yearly'); // monthly - yearly
     const [date, setDate] = useState<string>(moment().format('YYYY-MM-DD'));
+    const [year, setYear] = useState<number>(moment().get('year'));
+
+    const handleDate = (date: string) => {
+        const newYear = moment(date).get('year')
+        if (year !== newYear) {
+            setYear(newYear)
+        }
+        setDate(date)
+    }
+
+    useEffect(() => {
+        getHolidays(moment().set('year', year).get('year'))
+    }, [getHolidays, year]);
+
     const Component = handleFactory(period);
 
     return (
         <div className="calendar__page">
             <Header period={period} setPeriod={setPeriod} />
-            <Content period={period} date={date} setDate={setDate} >
-                <Component date={date} />
-            </Content>
+            <Component
+                setPeriod={setPeriod}
+                handleDate={handleDate}
+                initialDate={date}
+                holidays={calendar.holidays[year] || []}
+                year={year}
+            />
         </div>
     );
 };
 
-export default memo(Calendar);
+const mapState = (state: any) => ({
+    calendar: state.calendar,
+});
+
+const mapDispatch = (dispatch: any) => ({
+    getHolidays: (payload: any) =>
+        dispatch.calendar.getHolidaysAsync(payload),
+});
+
+
+
+export default connect(mapState, mapDispatch)(memo(Calendar));

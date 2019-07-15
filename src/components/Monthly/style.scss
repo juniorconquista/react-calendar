@@ -3,9 +3,12 @@
         margin-top: 15px;
         margin-bottom: 5px;
         display: grid;
-        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        grid-template-columns: repeat(7, minmax(70px, 1fr));
         grid-row-gap: 10px;
         grid-column-gap: 10px;
+        @media (max-width: 600px) {
+            display: none;
+        }
         .day {
             display: flex;
             justify-content: flex-end;
@@ -19,13 +22,20 @@
     }
     .month {
         display: grid;
-        grid-template-columns: repeat(7, minmax(100px, 1fr));
+        grid-template-columns: repeat(7, minmax(70px, 1fr));
         grid-row-gap: 10px;
         grid-column-gap: 10px;
+        @media (max-width: 600px) {
+            margin-top: 15px;
+            grid-template-columns: repeat(4, minmax(70px, 1fr));
+        }
+        @media (max-width: 453px) {
+            margin-top: 15px;
+            grid-template-columns: repeat(2, minmax(70px, 1fr));
+        }
+        
         .day {
             height: 118px;
-            display: flex;
-            justify-content: flex-end;
             color: #fff;
             padding: 10px 15px;
             border: 1px solid #383839;
@@ -33,6 +43,59 @@
             &.disabled {
                 color: #808080;
                 background-color: #3f4042;
+            }
+            @media (max-width: 960px) {
+                height: 70px;
+            }
+            @media (max-width: 600px) {
+                padding: 10px;
+            }
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            align-content: space-evenly;
+            height: 100%;
+            .date {
+                display: flex;
+                justify-content: flex-end;
+                @media (max-width: 600px) {
+                    justify-content: space-between;
+                    p {
+                        font-size: 10px;
+                    }
+                }
+                width: 100%;
+                p:first-child {
+                    display: none;
+                    @media (max-width: 600px) {
+                        display: block;
+                    }
+                }
+            }
+            .holiday {
+                width: 100%;
+                text-align: right;
+                padding: 5px;
+                border-radius: 2px;
+                font-family: 'Gotham Bold';
+                font-size: 13px;
+                color: #fff;
+                @media (max-width: 960px) {
+                    font-size: 8px;
+                    overflow: auto;
+                }
+            }
+            .public {
+                background-color: #bd4b05;
+            }
+            .optional {
+                background-color: #1879b5;
+            }
+            .observance {
+                background-color: #9a309a;
             }
         }
     }

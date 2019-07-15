@@ -4,6 +4,7 @@ import isSafeInteger from 'lodash/isSafeInteger';
 export const getDaysBetweenMonths = (
     referenceMonth: number,
     referenceYear: number,
+    holidays: [],
 ) => {
     if (!isSafeInteger(referenceMonth) || !isSafeInteger(referenceYear)) {
         const today = new Date();
@@ -16,13 +17,12 @@ export const getDaysBetweenMonths = (
         days: endDate.diff(startDate, 'days') + 1,
         startDate,
         endDate,
-        customDaysArray: getDaysBetweenDates(startDate, endDate),
-        customDatesArray: getDatesBetweenDates(startDate, endDate),
+        customDaysArray: getDaysBetweenDates(startDate, endDate, holidays),
     };
     return returnObject;
 };
 
-export const getMonthsBetweenYear = (year: number) => {
+export const getMonthsBetweenYear = (year: number, holidays: []) => {
     const monthsInYear = months.reduce(
         (prev: any, curr: string, index: number) => {
             const startDate = moment()
@@ -37,6 +37,7 @@ export const getMonthsBetweenYear = (year: number) => {
             const days = getDaysBetweenDates(
                 startDate.subtract(weekDay !== 7 ? weekDay : 0, 'day'),
                 endDate,
+                holidays,
             );
             prev[curr] = days;
             return prev;
@@ -71,24 +72,24 @@ const getCurrentPeriod = (month: number, year: number) => {
     };
 };
 
-const getDaysBetweenDates = (date: moment.Moment, endDate: moment.Moment) => {
+const getDaysBetweenDates = (
+    date: moment.Moment,
+    endDate: moment.Moment,
+    holidays: [],
+) => {
     const dateArray = [];
     while (date <= endDate) {
         dateArray.push({
+            weekDay: moment(date).isoWeekday(),
             formatedDate: moment(date).get('date'),
+            holiday: holidays.find(
+                (holiday: { date: string }) =>
+                    holiday.date === moment(date).format('YYYY-MM-DD'),
+            ),
             disabled: !moment(endDate)
                 .startOf('month')
                 .isSameOrBefore(moment(date)),
         });
-        date = moment(date).add(1, 'days');
-    }
-    return dateArray;
-};
-
-const getDatesBetweenDates = (date: moment.Moment, endDate: moment.Moment) => {
-    const dateArray = [];
-    while (date <= endDate) {
-        dateArray.push(moment(date).format('DD-MM-YYYY'));
         date = moment(date).add(1, 'days');
     }
     return dateArray;
